@@ -30,7 +30,6 @@ class App extends Component {
 		const token = localStorage.getItem("token")
 
 		if (token){
-			// load up their shit
 			fetch("http://localhost:3001/api/v1/auto_login", {
 				headers: {
 					"Authorization": token
