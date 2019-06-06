@@ -26,7 +26,7 @@ class SignupForm extends React.Component {
 		})
 		.then(res => res.json())
 		.then((response) => {
-			if (response.errors){
+			if (response.errors) {
 				alert(response.errors)
 			} else {
 				this.props.setCurrentUser(response)
