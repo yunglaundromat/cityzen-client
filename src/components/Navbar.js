@@ -18,6 +18,15 @@ class Navbar extends React.Component {
 								<Link className="item" to={`/profile`}>
 									{this.props.currentUser.username}
 								</Link>
+								<Link className="item" to={`/`}>
+									Start a Petition
+								</Link>
+								<Link className="item" to={`/`}>
+									Browse Petitions
+								</Link>
+								<Menu.Item>
+									About Us
+								</Menu.Item>
 								<Menu.Item onClick={this.props.logOut}>
 									Log out
 								</Menu.Item>

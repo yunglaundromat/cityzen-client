@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import { Switch, Route } from 'react-router-dom'
 import { Grid } from 'semantic-ui-react'
-import Profile from './containers/Profile'
+import CurrentUserProfile from './containers/CurrentUserProfile'
 import Navbar from './components/Navbar'
 import LoginForm from './components/LoginForm'
 import SignupForm from './components/SignupForm'
@@ -66,7 +66,7 @@ class App extends Component {
 				<Grid.Row centered>
 					<Switch>
 						<Route path="/profile" render={(routeProps) => {
-							return <Profile {...routeProps} updateUser={this.updateUser} currentUser={this.state.currentUser}/>
+							return <CurrentUserProfile {...routeProps} updateUser={this.updateUser} currentUser={this.state.currentUser}/>
 						}} />
 						<Route path="/login" render={(routeProps) => {
 							return <LoginForm {...routeProps} setCurrentUser={this.setCurrentUser}/>
