@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form, Button } from 'semantic-ui-react'
+import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react'
 
 class SignupForm extends React.Component {
 	state = {
@@ -44,25 +44,60 @@ class SignupForm extends React.Component {
 
 	render(){
 		return (
-			<Form onSubmit={this.handleSubmit}>
-		    <Form.Field>
-		      <label>Username</label>
-		      <input onChange={this.handleChange} name="username" value={this.state.username} placeholder='Username' />
-		    </Form.Field>
-		    <Form.Field>
-		      <label>Name</label>
-		      <input onChange={this.handleChange} name="name" value={this.state.name} placeholder='Name' />
-		    </Form.Field>
-		    <Form.Field>
-		      <label>Password</label>
-		      <input onChange={this.handleChange} type="password" name="password" value={this.state.password} placeholder='Password' />
-		    </Form.Field>
-		    <Form.Field>
-		      <label>Password Confirmation</label>
-		      <input onChange={this.handleChange} type="password" name="passwordConfirmation" value={this.state.passwordConfirmation} placeholder='Password Confirmation' />
-		    </Form.Field>
-		    <Button type='submit'>Submit</Button>
-		  </Form>
+      <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
+				<Grid.Column style={{ maxWidth: 450 }}>
+					<Header as='h2' color='teal' textAlign='center'>
+						<Image src='img/logo.png' /> Create an account
+					</Header>
+					<Form size='large' onSubmit={this.handleSubmit}>
+						<Segment stacked>
+							<Form.Input
+								name='username'
+								fluid icon='user'
+								iconPosition='left'
+								placeholder='Username'
+								onChange={this.handleChange}
+								value={this.state.username}
+							/>
+              <Form.Input
+								name='name'
+								fluid icon='address card outline'
+								iconPosition='left'
+								placeholder='Full Name'
+								onChange={this.handleChange}
+								value={this.state.name}
+							/>
+							<Form.Input
+								fluid
+								icon='lock'
+								iconPosition='left'
+								placeholder='Password'
+								type='password'
+								onChange={this.handleChange}
+								name="password"
+								value={this.state.password}
+							/>
+              <Form.Input
+								fluid
+								icon='redo alternate'
+								iconPosition='left'
+								placeholder='Confirm Password'
+								type='password'
+								onChange={this.handleChange}
+								name="passwordConfirmation"
+								value={this.state.passwordConfirmation}
+							/>
+
+							<Button color='teal' fluid size='large'>
+								Login
+							</Button>
+						</Segment>
+					</Form>
+          <Message>
+						Already have an account? <a href='/login'>Log in</a>
+					</Message>
+				</Grid.Column>
+			</Grid>
 		)
 	}
 }

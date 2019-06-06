@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import { Switch, Route } from 'react-router-dom'
 import { Grid } from 'semantic-ui-react'
+import Profile from './containers/Profile'
 import Navbar from './components/Navbar'
 import LoginForm from './components/LoginForm'
 import SignupForm from './components/SignupForm'
@@ -30,6 +31,7 @@ class App extends Component {
 		const token = localStorage.getItem("token")
 
 		if (token){
+			// load up their shit
 			fetch("http://localhost:3001/api/v1/auto_login", {
 				headers: {
 					"Authorization": token
@@ -63,7 +65,9 @@ class App extends Component {
 				<Navbar currentUser={this.state.currentUser} logOut={this.logOut}/>
 				<Grid.Row centered>
 					<Switch>
-
+						<Route path="/profile" render={(routeProps) => {
+							return <Profile {...routeProps} updateUser={this.updateUser} currentUser={this.state.currentUser}/>
+						}} />
 						<Route path="/login" render={(routeProps) => {
 							return <LoginForm {...routeProps} setCurrentUser={this.setCurrentUser}/>
 						}} />

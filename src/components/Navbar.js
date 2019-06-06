@@ -8,15 +8,15 @@ class Navbar extends React.Component {
 		return (
 			<Grid.Row>
 				<Grid.Column width={16}>
-					<Menu>
-						<Link className="item" to="/shop">
-							Shop
+					<Menu borderless>
+						<Link className="item" to="/">
+							CityZen
 						</Link>
 						{this.props.currentUser
 							?
 							<Menu.Menu position="right">
 								<Link className="item" to={`/profile`}>
-									{this.props.currentUser.username} - ${this.props.currentUser.balance}
+									{this.props.currentUser.username}
 								</Link>
 								<Menu.Item onClick={this.props.logOut}>
 									Log out

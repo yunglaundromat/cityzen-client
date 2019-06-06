@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form, Button } from 'semantic-ui-react'
+import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react'
 
 class LoginForm extends React.Component {
 	state = {
@@ -34,19 +34,47 @@ class LoginForm extends React.Component {
 
 	render(){
 		return (
-			<Form onSubmit={this.handleSubmit}>
-		    <Form.Field>
-		      <label>Username</label>
-		      <input onChange={this.handleChange} name="username" value={this.state.username} placeholder='Username' />
-		    </Form.Field>
-		    <Form.Field>
-		      <label>Password</label>
-		      <input onChange={this.handleChange} type="password" name="password" value={this.state.password} placeholder='Password' />
-		    </Form.Field>
-		    <Button type='submit'>Submit</Button>
-		  </Form>
+			<Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
+				<Grid.Column style={{ maxWidth: 450 }}>
+					<Header as='h2' color='teal' textAlign='center'>
+						<Image src='img/logo.png' /> Log in to your account
+					</Header>
+					<Form size='large' onSubmit={this.handleSubmit}>
+						<Segment stacked>
+							<Form.Input
+								name='username'
+								fluid icon='user'
+								iconPosition='left'
+								placeholder='Username'
+								onChange={this.handleChange}
+								value={this.state.username}
+							/>
+							<Form.Input
+								fluid
+								icon='lock'
+								iconPosition='left'
+								placeholder='Password'
+								type='password'
+								onChange={this.handleChange}
+								name="password"
+								value={this.state.password}
+							/>
+
+							<Button color='teal' fluid size='large'>
+								Login
+							</Button>
+						</Segment>
+					</Form>
+					<Message>
+						New to CityZen? <a href='/signup'>Sign Up</a>
+					</Message>
+				</Grid.Column>
+			</Grid>
 		)
 	}
 }
+
+
+
 
 export default LoginForm;
