@@ -6,10 +6,15 @@ import CurrentUserProfile from './containers/CurrentUserProfile'
 import Navbar from './components/Navbar'
 import LoginForm from './components/LoginForm'
 import SignupForm from './components/SignupForm'
+import SearchResultsContainer from './containers/SearchResultsContainer'
+
 
 class App extends Component {
 	state = {
-		currentUser: null
+		currentUser: null,
+		allUsers: [],
+		filteredUsers: [],
+		searchBar: ""
 	}
 
 	logOut = () => {
@@ -26,6 +31,15 @@ class App extends Component {
 			currentUser: updatedUser
 		})
 	}
+
+  onSearchChange = (e) => {
+    let userFilter = []
+    this.props.history.push('/search')
+    this.setState({searchBar: e.target.value}, () => {
+      userFilter = this.state.allUsers.filter(user => (user.username || user.name).includes(this.state.searchBar))
+      this.setState({filteredUsers: userFilter})
+    })
+  }
 
 	componentDidMount(){
 		const token = localStorage.getItem("token")
@@ -47,6 +61,10 @@ class App extends Component {
 					})
 				}
 			})
+			fetch("http://localhost:3001/api/v1/users")
+			.then(res => res.json())
+			.then(data =>
+				this.setState({allUsers: data}, () => console.log("all users", this.state.allUsers)))
 		}
 	}
 
@@ -62,7 +80,7 @@ class App extends Component {
 		console.log(this.state)
 		return (
 			<Grid>
-				<Navbar currentUser={this.state.currentUser} logOut={this.logOut}/>
+				<Navbar currentUser={this.state.currentUser} logOut={this.logOut} onSearchChange={this.onSearchChange} searchBar={this.state.searchBar}/>
 				<Grid.Row centered>
 					<Switch>
 						<Route path="/profile" render={(routeProps) => {
@@ -74,6 +92,9 @@ class App extends Component {
 						<Route path="/signup" render={(routeProps) => {
 							return <SignupForm {...routeProps} setCurrentUser={this.setCurrentUser}/>
 						}} />
+						/* <Route path="/search" render={(routeProps) => {
+							return <SearchResultsContainer {...routeProps} setCurrentUser={this.setCurrentUser} searchBar={this.state.searchBar} filteredUsers={this.state.filteredUsers}/>
+						}} /> *
 					</Switch>
 				</Grid.Row>
 			</Grid>
