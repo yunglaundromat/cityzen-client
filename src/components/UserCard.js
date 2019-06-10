@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { PureComponent } from 'react'
 import { Button, Card } from 'semantic-ui-react'
 
-class UserCard extends React.Component {
+class UserCard extends PureComponent {
 
   sanitizeDate(string) {
   // console.log(string.slice(5,7))
@@ -63,7 +63,7 @@ class UserCard extends React.Component {
             <Button basic color='green'>
               Follow
             </Button>
-            <Button basic color='blue'>
+            <Button basic color='blue' onClick={() => this.props.onSelectedUserClick(this.props.user)}>
               View Profile
             </Button>
           </div>

@@ -3,6 +3,7 @@ import './App.css';
 import { Switch, Route } from 'react-router-dom'
 import { Grid } from 'semantic-ui-react'
 import CurrentUserProfile from './containers/CurrentUserProfile'
+import UserProfile from './containers/UserProfile'
 import Navbar from './components/Navbar'
 import LoginForm from './components/LoginForm'
 import SignupForm from './components/SignupForm'
@@ -12,9 +13,10 @@ import SearchResultsContainer from './containers/SearchResultsContainer'
 class App extends Component {
 	state = {
 		currentUser: null,
+		selectedUser: null,
 		allUsers: [],
 		filteredUsers: [],
-		searchBar: ""
+		searchBar: "",
 	}
 
 	logOut = () => {
@@ -36,7 +38,7 @@ class App extends Component {
     let userFilter = []
     this.props.history.push('/search')
     this.setState({searchBar: e.target.value}, () => {
-      userFilter = this.state.allUsers.filter(user => (user.username || user.name).includes(this.state.searchBar))
+      userFilter = this.state.allUsers.filter(user => (user.username).includes(this.state.searchBar))
       this.setState({filteredUsers: userFilter})
     })
   }
@@ -45,7 +47,6 @@ class App extends Component {
 		const token = localStorage.getItem("token")
 
 		if (token){
-			// load up their shit
 			fetch("http://localhost:3001/api/v1/auto_login", {
 				headers: {
 					"Authorization": token
@@ -68,6 +69,12 @@ class App extends Component {
 		}
 	}
 
+	onSelectedUserClick = (user) => {
+		this.setState({selectedUser: user}, () => {
+			this.props.history.push("/userprofile")
+		})
+	}
+
 	setCurrentUser = (response) => {
 		this.setState({
 			currentUser: response.user
@@ -76,6 +83,7 @@ class App extends Component {
 			this.props.history.push(`/profile`)
 		})
 	}
+
 	render() {
 		console.log(this.state)
 		return (
@@ -92,9 +100,12 @@ class App extends Component {
 						<Route path="/signup" render={(routeProps) => {
 							return <SignupForm {...routeProps} setCurrentUser={this.setCurrentUser}/>
 						}} />
-						/* <Route path="/search" render={(routeProps) => {
-							return <SearchResultsContainer {...routeProps} setCurrentUser={this.setCurrentUser} searchBar={this.state.searchBar} filteredUsers={this.state.filteredUsers}/>
-						}} /> *
+						<Route path="/search" render={(routeProps) => {
+							return <SearchResultsContainer {...routeProps} setCurrentUser={this.setCurrentUser} searchBar={this.state.searchBar} filteredUsers={this.state.filteredUsers} onSelectedUserClick={this.onSelectedUserClick}/>
+						}} />
+						<Route path="/userprofile" render={(routeProps) => {
+							return <UserProfile selectedUser={this.state.selectedUser}/>
+						}} />
 					</Switch>
 				</Grid.Row>
 			</Grid>

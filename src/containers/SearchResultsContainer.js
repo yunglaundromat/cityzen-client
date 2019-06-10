@@ -19,9 +19,8 @@ class SearchResultsContainer extends React.Component {
           <Icon name='users' circular />
           <Header.Content>{this.displayHeader(this.props.searchBar)}</Header.Content>
         </Header>
-        <Divider />
         <Card.Group>
-          {this.props.filteredUsers.map(user => <UserCard key={user.id} user={user}/>)}
+          {this.props.filteredUsers.map(user => <UserCard key={user.id} user={user} onSelectedUserClick={this.props.onSelectedUserClick}/>)}
         </Card.Group>
       </Fragment>
     )
