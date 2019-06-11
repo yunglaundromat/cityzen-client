@@ -1,6 +1,6 @@
 import React , { Fragment } from 'react'
 import UserCard from '../components/UserCard'
-import { Header, Icon, Image, Card, Divider } from 'semantic-ui-react'
+import { Header, Icon, Card } from 'semantic-ui-react'
 
 class SearchResultsContainer extends React.Component {
 
@@ -20,7 +20,7 @@ class SearchResultsContainer extends React.Component {
           <Header.Content>{this.displayHeader(this.props.searchBar)}</Header.Content>
         </Header>
         <Card.Group>
-          {this.props.filteredUsers.map(user => <UserCard key={user.id} user={user} onSelectedUserClick={this.props.onSelectedUserClick}/>)}
+          {this.props.filteredUsers.map(user => <UserCard key={user.id} user={user} onSelectedUserClick={this.props.onSelectedUserClick} onFollowUserClick={this.props.onFollowUserClick}/>)}
         </Card.Group>
       </Fragment>
     )

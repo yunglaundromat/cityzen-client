@@ -18,11 +18,8 @@ class Navbar extends React.Component {
 								<Link className="item" to={`/profile`}>
 									{this.props.currentUser.username}
 								</Link>
-								<Link className="item" to={`/`}>
+								<Link className="item" to={`/createpetition`}>
 									Start a Petition
-								</Link>
-								<Link className="item" to={`/`}>
-									Browse Petitions
 								</Link>
 								<Menu.Item>
 									About Us

@@ -1,5 +1,6 @@
 import React from 'react'
 import { Container, Divider, Grid, Header, Icon } from 'semantic-ui-react'
+import PetitionListContainer from './PetitionListContainer'
 
 class UserProfile extends React.Component {
 
@@ -89,9 +90,9 @@ class UserProfile extends React.Component {
             <Grid.Row>
               <Grid.Column>
                 <Header as='h3' inverted textAlign='center'>
-                  View {this.props.selectedUser ? this.props.selectedUser.name : null}'s petitions
+                  {this.props.selectedUser ? this.props.selectedUser.name : null}'s petitions
                 </Header>
-                <p />
+                {this.props.selectedUser ? <PetitionListContainer petitions={this.props.selectedUser.petitions} /> : null}
               </Grid.Column>
               <Grid.Column>
                 <Header as='h3' inverted textAlign='center'>

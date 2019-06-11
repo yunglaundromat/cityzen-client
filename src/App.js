@@ -4,6 +4,7 @@ import { Switch, Route } from 'react-router-dom'
 import { Grid } from 'semantic-ui-react'
 import CurrentUserProfile from './containers/CurrentUserProfile'
 import UserProfile from './containers/UserProfile'
+import PetitionForm from './components/PetitionForm'
 import Navbar from './components/Navbar'
 import LoginForm from './components/LoginForm'
 import SignupForm from './components/SignupForm'
@@ -17,6 +18,26 @@ class App extends Component {
 		allUsers: [],
 		filteredUsers: [],
 		searchBar: "",
+		petitionTitle: "",
+		petitionLocation: "",
+		petitionDescription: "",
+		petitionSignatureGoal: ""
+	}
+
+	onTitleChange = (e) => {
+		this.setState({petitionTitle: e.target.value})
+	}
+
+	onLocationChange = (e) => {
+		this.setState({petitionLocation: e.target.value})
+	}
+
+	onDescriptionChange = (e) => {
+		this.setState({petitionDescription: e.target.value})
+	}
+
+	onSignatureGoalChange = (e) => {
+		this.setState({petitionSignatureGoal: e.target.value})
 	}
 
 	logOut = () => {
@@ -31,6 +52,27 @@ class App extends Component {
 	updateUser = (updatedUser) => {
 		this.setState({
 			currentUser: updatedUser
+		})
+	}
+
+	onPetitionSubmit = () => {
+		fetch("http://localhost:3001/api/v1/petitions", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				"Accepts": "application/json"
+			},
+			body: JSON.stringify({
+				user_id: this.state.currentUser.id,
+				title: this.state.petitionTitle,
+				description: this.state.petitionDescription,
+				location: this.state.petitionLocation,
+				signature_goal: this.state.petitionSignatureGoal
+			})
+		})
+		.then(res => res.json())
+		.then(res => {
+			console.log(res)
 		})
 	}
 
@@ -72,7 +114,25 @@ class App extends Component {
 	onSelectedUserClick = (user) => {
 		this.setState({selectedUser: user}, () => {
 			this.props.history.push("/userprofile")
+			this.setState({searchBar: ""})
 		})
+	}
+
+	onFollowUserClick = (user) => {
+		console.log("follow", user)
+		fetch("http://localhost:3001/api/v1/follows", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				"Accepts": "application/json"
+			},
+			body: JSON.stringify({
+				follower_id: this.state.currentUser.id,
+				followee_id: user.id
+			})
+		})
+		.then(res => res.json())
+		.then(res => console.log(res))
 	}
 
 	setCurrentUser = (response) => {
@@ -85,7 +145,6 @@ class App extends Component {
 	}
 
 	render() {
-		console.log(this.state)
 		return (
 			<Grid>
 				<Navbar currentUser={this.state.currentUser} logOut={this.logOut} onSearchChange={this.onSearchChange} searchBar={this.state.searchBar}/>
@@ -101,10 +160,28 @@ class App extends Component {
 							return <SignupForm {...routeProps} setCurrentUser={this.setCurrentUser}/>
 						}} />
 						<Route path="/search" render={(routeProps) => {
-							return <SearchResultsContainer {...routeProps} setCurrentUser={this.setCurrentUser} searchBar={this.state.searchBar} filteredUsers={this.state.filteredUsers} onSelectedUserClick={this.onSelectedUserClick}/>
+							return <SearchResultsContainer {...routeProps} setCurrentUser={this.setCurrentUser}
+								searchBar={this.state.searchBar}
+								filteredUsers={this.state.filteredUsers}
+								onSelectedUserClick={this.onSelectedUserClick}
+								onFollowUserClick={this.onFollowUserClick}
+								/>
 						}} />
 						<Route path="/userprofile" render={(routeProps) => {
 							return <UserProfile selectedUser={this.state.selectedUser}/>
+						}} />
+						<Route path="/createpetition" render={(routeProps) => {
+							return <PetitionForm
+								petitionTitle={this.state.petitionTitle}
+								petitionLocation={this.state.petitionLocation}
+								petitionDescription={this.state.petitionDescription}
+								petitionSignatureGoal={this.state.petitionSignatureGoal}
+								onTitleChange={this.onTitleChange}
+								onLocationChange={this.onLocationChange}
+								onDescriptionChange={this.onDescriptionChange}
+								onSignatureGoalChange={this.onSignatureGoalChange}
+								onPetitionSubmit={this.onPetitionSubmit}
+							/>
 						}} />
 					</Switch>
 				</Grid.Row>

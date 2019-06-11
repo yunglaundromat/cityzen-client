@@ -60,7 +60,7 @@ class UserCard extends PureComponent {
         </Card.Content>
         <Card.Content extra>
           <div className='ui two buttons'>
-            <Button basic color='green'>
+            <Button basic color='green' onClick={() => this.props.onFollowUserClick(this.props.user)}>
               Follow
             </Button>
             <Button basic color='blue' onClick={() => this.props.onSelectedUserClick(this.props.user)}>

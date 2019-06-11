@@ -1,5 +1,6 @@
 import React from 'react'
 import { Container, Divider, Grid, Header, Icon } from 'semantic-ui-react'
+import PetitionListContainer from './PetitionListContainer'
 
 class CurrentUserProfile extends React.Component {
 
@@ -48,6 +49,10 @@ class CurrentUserProfile extends React.Component {
   return `${month_name} ${date}, ${year}`
 };
 
+  componentDidMount() {
+    console.log(this.props.currentUser)
+  }
+
   render() {
     return (
       <Container>
@@ -95,9 +100,9 @@ class CurrentUserProfile extends React.Component {
               </Grid.Column>
               <Grid.Column>
                 <Header as='h3' inverted textAlign='center'>
-                  Edit your petitions
+                  Your petitions
                 </Header>
-                <p />
+                {this.props.currentUser ? <PetitionListContainer petitions={this.props.currentUser.petitions}/> : null }
               </Grid.Column>
             </Grid.Row>
             <Grid.Row>
