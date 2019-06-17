@@ -6,7 +6,7 @@ class PetitionListContainer extends React.Component {
   render() {
     return (
       <Card.Group>
-        {this.props.petitions.map(petition => <PetitionCard key={petition.id} petition={petition}/>)}
+        {this.props.petitions.map(petition => <PetitionCard key={petition.id} petition={petition} onSignPetitionClick={this.props.onSignPetitionClick}/>)}
       </Card.Group>
     )
   }

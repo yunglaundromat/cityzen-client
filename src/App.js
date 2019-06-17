@@ -4,6 +4,7 @@ import { Switch, Route } from 'react-router-dom'
 import { Grid } from 'semantic-ui-react'
 import CurrentUserProfile from './containers/CurrentUserProfile'
 import UserProfile from './containers/UserProfile'
+import AppContainer from './containers/AppContainer'
 import PetitionForm from './components/PetitionForm'
 import Navbar from './components/Navbar'
 import LoginForm from './components/LoginForm'
@@ -14,6 +15,8 @@ import SearchResultsContainer from './containers/SearchResultsContainer'
 class App extends Component {
 	state = {
 		currentUser: null,
+		currentUserFollowees: [],
+		selectedPetition: null,
 		selectedUser: null,
 		allUsers: [],
 		filteredUsers: [],
@@ -55,6 +58,32 @@ class App extends Component {
 		})
 	}
 
+	onSignPetitionClick = (petition) => {
+		fetch("http://localhost:3001/api/v1/signatures", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				"Accepts": "application/json"
+			},
+			body: JSON.stringify({
+				user_id: this.state.currentUser.id,
+				petition_id: petition.id
+			})
+		})
+		fetch(`http://localhost:3001/api/v1/users/${this.state.currentUser.id}`)
+		.then(res => res.json())
+		.then(res => {
+			this.setState({currentUser: res})
+		})
+		if (this.state.selectedUser !== null) {
+			fetch(`http://localhost:3001/api/v1/users/${this.state.selectedUser.id}`)
+			.then(res => res.json())
+			.then(res => {
+				this.setState({currentUser: res})
+			})
+		}
+	}
+
 	onPetitionSubmit = () => {
 		fetch("http://localhost:3001/api/v1/petitions", {
 			method: "POST",
@@ -69,10 +98,6 @@ class App extends Component {
 				location: this.state.petitionLocation,
 				signature_goal: this.state.petitionSignatureGoal
 			})
-		})
-		.then(res => res.json())
-		.then(res => {
-			console.log(res)
 		})
 	}
 
@@ -100,8 +125,9 @@ class App extends Component {
 					alert(response.errors)
 				} else {
 					this.setState({
-						currentUser: response
-					})
+						currentUser: response,
+						currentUserFollowees: response.followees
+					}, () => console.log(this.state.currentUserFollowees))
 				}
 			})
 			fetch("http://localhost:3001/api/v1/users")
@@ -131,8 +157,6 @@ class App extends Component {
 				followee_id: user.id
 			})
 		})
-		.then(res => res.json())
-		.then(res => console.log(res))
 	}
 
 	setCurrentUser = (response) => {
@@ -150,8 +174,11 @@ class App extends Component {
 				<Navbar currentUser={this.state.currentUser} logOut={this.logOut} onSearchChange={this.onSearchChange} searchBar={this.state.searchBar}/>
 				<Grid.Row centered>
 					<Switch>
+						<Route path="/main" render={(routeProps) => {
+							return <AppContainer {...routeProps} updateUser={this.updateUser} currentUser={this.state.currentUser}/>
+						}} />
 						<Route path="/profile" render={(routeProps) => {
-							return <CurrentUserProfile {...routeProps} updateUser={this.updateUser} currentUser={this.state.currentUser}/>
+							return <CurrentUserProfile {...routeProps} updateUser={this.updateUser} currentUser={this.state.currentUser} onSignPetitionClick={this.onSignPetitionClick} />
 						}} />
 						<Route path="/login" render={(routeProps) => {
 							return <LoginForm {...routeProps} setCurrentUser={this.setCurrentUser}/>
@@ -168,7 +195,7 @@ class App extends Component {
 								/>
 						}} />
 						<Route path="/userprofile" render={(routeProps) => {
-							return <UserProfile selectedUser={this.state.selectedUser}/>
+							return <UserProfile selectedUser={this.state.selectedUser} onSignPetitionClick={this.onSignPetitionClick}/>
 						}} />
 						<Route path="/createpetition" render={(routeProps) => {
 							return <PetitionForm

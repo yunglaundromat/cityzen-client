@@ -1,6 +1,7 @@
 import React from 'react'
 import { Container, Divider, Grid, Header, Icon } from 'semantic-ui-react'
 import PetitionListContainer from './PetitionListContainer'
+import FolloweeListContainer from './FolloweesListContainer'
 
 class CurrentUserProfile extends React.Component {
 
@@ -102,7 +103,7 @@ class CurrentUserProfile extends React.Component {
                 <Header as='h3' inverted textAlign='center'>
                   Your petitions
                 </Header>
-                {this.props.currentUser ? <PetitionListContainer petitions={this.props.currentUser.petitions}/> : null }
+                {this.props.currentUser ? <PetitionListContainer petitions={this.props.currentUser.petitions} onSignPetitionClick={this.props.onSignPetitionClick}/> : null }
               </Grid.Column>
             </Grid.Row>
             <Grid.Row>
@@ -116,7 +117,7 @@ class CurrentUserProfile extends React.Component {
                 <Header as='h3' inverted textAlign='center'>
                   Users you follow
                 </Header>
-                <p />
+                {this.props.currentUser ? <FolloweeListContainer followees={this.props.currentUser.followees} /> : null }
               </Grid.Column>
             </Grid.Row>
           </Grid>

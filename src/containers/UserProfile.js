@@ -1,5 +1,6 @@
 import React from 'react'
 import { Container, Divider, Grid, Header, Icon } from 'semantic-ui-react'
+import FolloweesListContainer from './FolloweesListContainer'
 import PetitionListContainer from './PetitionListContainer'
 
 class UserProfile extends React.Component {
@@ -92,14 +93,15 @@ class UserProfile extends React.Component {
                 <Header as='h3' inverted textAlign='center'>
                   {this.props.selectedUser ? this.props.selectedUser.name : null}'s petitions
                 </Header>
-                {this.props.selectedUser ? <PetitionListContainer petitions={this.props.selectedUser.petitions} /> : null}
+                {this.props.selectedUser ? <PetitionListContainer petitions={this.props.selectedUser.petitions} onSignPetitionClick={this.props.onSignPetitionClick} /> : null}
               </Grid.Column>
               <Grid.Column>
                 <Header as='h3' inverted textAlign='center'>
-                  Edit your petitions
+                  Users {this.props.selectedUser ? this.props.selectedUser.name : null} follows
                 </Header>
-                <p />
+                {this.props.selectedUser ? <FolloweesListContainer followees={this.props.selectedUser.followees} /> : null}
               </Grid.Column>
+
             </Grid.Row>
             <Grid.Row>
               <Grid.Column>
@@ -108,12 +110,12 @@ class UserProfile extends React.Component {
                 </Header>
                 <p />
               </Grid.Column>
-              <Grid.Column>
+              {/*<Grid.Column>
                 <Header as='h3' inverted textAlign='center'>
-                  Users {this.props.selectedUser ? this.props.selectedUser.name : null} follows
+                  Edit your petitions
                 </Header>
                 <p />
-              </Grid.Column>
+              </Grid.Column>*/}
             </Grid.Row>
           </Grid>
       </Container>
