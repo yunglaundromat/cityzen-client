@@ -24,7 +24,8 @@ class App extends Component {
 		petitionTitle: "",
 		petitionLocation: "",
 		petitionDescription: "",
-		petitionSignatureGoal: ""
+		petitionSignatureGoal: "",
+		userFolloweePetitions: []
 	}
 
 	onTitleChange = (e) => {
@@ -58,6 +59,20 @@ class App extends Component {
 		})
 	}
 
+	getUserFolloweePetitions = () => {
+		let petitions = []
+		if (this.state.currentUser) {
+			this.state.currentUser.followees.forEach(followee => {
+				fetch(`http://localhost:3001/api/v1/users/${followee.id}`)
+				.then(res => res.json())
+				.then(res => {
+					petitions.push(res.petitions)
+				})
+			})
+		}
+		this.setState({userFolloweePetitions: petitions}, () => console.log(this.state.userFolloweePetitions))
+	}
+
 	onSignPetitionClick = (petition) => {
 		fetch("http://localhost:3001/api/v1/signatures", {
 			method: "POST",
@@ -70,21 +85,10 @@ class App extends Component {
 				petition_id: petition.id
 			})
 		})
-		fetch(`http://localhost:3001/api/v1/users/${this.state.currentUser.id}`)
-		.then(res => res.json())
-		.then(res => {
-			this.setState({currentUser: res})
-		})
-		if (this.state.selectedUser !== null) {
-			fetch(`http://localhost:3001/api/v1/users/${this.state.selectedUser.id}`)
-			.then(res => res.json())
-			.then(res => {
-				this.setState({currentUser: res})
-			})
-		}
 	}
 
 	onPetitionSubmit = () => {
+		this.props.history.push("/profile")
 		fetch("http://localhost:3001/api/v1/petitions", {
 			method: "POST",
 			headers: {
@@ -97,9 +101,13 @@ class App extends Component {
 				description: this.state.petitionDescription,
 				location: this.state.petitionLocation,
 				signature_goal: this.state.petitionSignatureGoal
+				})
 			})
-		})
-	}
+			.then(res => res.json())
+			.then(res => {
+				console.log(res)
+			})
+		}
 
   onSearchChange = (e) => {
     let userFilter = []
@@ -171,23 +179,41 @@ class App extends Component {
 	render() {
 		return (
 			<Grid>
-				<Navbar currentUser={this.state.currentUser} logOut={this.logOut} onSearchChange={this.onSearchChange} searchBar={this.state.searchBar}/>
+				<Navbar currentUser={this.state.currentUser}
+								logOut={this.logOut}
+								onSearchChange={this.onSearchChange}
+								searchBar={this.state.searchBar}
+								/>
 				<Grid.Row centered>
 					<Switch>
-						<Route path="/main" render={(routeProps) => {
-							return <AppContainer {...routeProps} updateUser={this.updateUser} currentUser={this.state.currentUser}/>
+						<Route path="/feed" render={(routeProps) => {
+							return <AppContainer {...routeProps}
+								updateUser={this.updateUser}
+								currentUser={this.state.currentUser}
+								getUserFolloweePetitions={this.getUserFolloweePetitions}
+								userFolloweePetitions={this.state.userFolloweePetitions}
+								/>
 						}} />
 						<Route path="/profile" render={(routeProps) => {
-							return <CurrentUserProfile {...routeProps} updateUser={this.updateUser} currentUser={this.state.currentUser} onSignPetitionClick={this.onSignPetitionClick} />
+							return <CurrentUserProfile {...routeProps}
+								updateUser={this.updateUser}
+								currentUser={this.state.currentUser}
+								onSignPetitionClick={this.onSignPetitionClick}
+								/>
 						}} />
 						<Route path="/login" render={(routeProps) => {
-							return <LoginForm {...routeProps} setCurrentUser={this.setCurrentUser}/>
+							return <LoginForm {...routeProps}
+								setCurrentUser={this.setCurrentUser}
+								/>
 						}} />
 						<Route path="/signup" render={(routeProps) => {
-							return <SignupForm {...routeProps} setCurrentUser={this.setCurrentUser}/>
+							return <SignupForm {...routeProps}
+								setCurrentUser={this.setCurrentUser}
+								/>
 						}} />
 						<Route path="/search" render={(routeProps) => {
-							return <SearchResultsContainer {...routeProps} setCurrentUser={this.setCurrentUser}
+							return <SearchResultsContainer {...routeProps}
+								setCurrentUser={this.setCurrentUser}
 								searchBar={this.state.searchBar}
 								filteredUsers={this.state.filteredUsers}
 								onSelectedUserClick={this.onSelectedUserClick}
@@ -195,7 +221,10 @@ class App extends Component {
 								/>
 						}} />
 						<Route path="/userprofile" render={(routeProps) => {
-							return <UserProfile selectedUser={this.state.selectedUser} onSignPetitionClick={this.onSignPetitionClick}/>
+							return <UserProfile
+								selectedUser={this.state.selectedUser}
+								onSignPetitionClick={this.onSignPetitionClick}
+								/>
 						}} />
 						<Route path="/createpetition" render={(routeProps) => {
 							return <PetitionForm

@@ -3,13 +3,12 @@ import { Card, Button } from 'semantic-ui-react'
 
 class PetitionCard extends React.Component {
 
-  findSignatureLength(signatures) {
+  findSignatureLength(signatures, secondArg) {
     if (signatures === []) {
       return 0
     } else {
       return signatures.length
     }
-
   }
 
   render() {

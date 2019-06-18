@@ -9,7 +9,7 @@ class Navbar extends React.Component {
 			<Grid.Row>
 				<Grid.Column width={16}>
 					<Menu borderless>
-						<Link className="item" to="/">
+						<Link className="item" to="/feed">
 							CityZen
 						</Link>
 						{this.props.currentUser
@@ -25,7 +25,7 @@ class Navbar extends React.Component {
 									About Us
 								</Menu.Item>
                 <Menu.Item>
-                  <Input icon='search' placeholder='Search users' value={this.props.searchBar} onChange={(e) => this.props.onSearchChange(e)}/>
+                  <Input icon='search' placeholder='Search by username' value={this.props.searchBar} onChange={(e) => this.props.onSearchChange(e)}/>
                 </Menu.Item>
 								<Menu.Item onClick={this.props.logOut}>
 									Log Out
