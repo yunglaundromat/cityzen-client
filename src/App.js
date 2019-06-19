@@ -60,17 +60,22 @@ class App extends Component {
 	}
 
 	getUserFolloweePetitions = () => {
-		let petitions = []
-		if (this.state.currentUser) {
-			this.state.currentUser.followees.forEach(followee => {
-				fetch(`http://localhost:3001/api/v1/users/${followee.id}`)
-				.then(res => res.json())
-				.then(res => {
-					petitions.push(res.petitions)
-				})
+		console.log("function hit!")
+		let userFolloweeIDs = []
+		let userFolloweePetitions = []
+		this.state.currentUser.followees.forEach(followee => {
+			userFolloweeIDs.push(followee.id)
+		})
+		fetch("http://localhost:3001/api/v1/petitions")
+		.then(res => res.json())
+		.then(res => {
+			res.forEach(petition => {
+				if (userFolloweeIDs.includes(petition.user.id)) {
+					userFolloweePetitions.push(petition)
+				}
 			})
-		}
-		this.setState({userFolloweePetitions: petitions}, () => console.log(this.state.userFolloweePetitions))
+			this.setState({userFolloweePetitions: userFolloweePetitions})
+		})
 	}
 
 	onSignPetitionClick = (petition) => {
@@ -141,7 +146,7 @@ class App extends Component {
 			fetch("http://localhost:3001/api/v1/users")
 			.then(res => res.json())
 			.then(data =>
-				this.setState({allUsers: data}, () => console.log("all users", this.state.allUsers)))
+				this.setState({allUsers: data}))
 		}
 	}
 
@@ -164,6 +169,10 @@ class App extends Component {
 				follower_id: this.state.currentUser.id,
 				followee_id: user.id
 			})
+		})
+		this.setState({selectedUser: user}, () => {
+			this.props.history.push("/userprofile")
+			this.setState({searchBar: ""})
 		})
 	}
 

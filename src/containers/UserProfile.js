@@ -108,7 +108,6 @@ class UserProfile extends React.Component {
                 <Header as='h3' inverted textAlign='center'>
                   {this.props.selectedUser ? this.props.selectedUser.name : null}'s followers
                 </Header>
-                <p />
               </Grid.Column>
               {/*<Grid.Column>
                 <Header as='h3' inverted textAlign='center'>

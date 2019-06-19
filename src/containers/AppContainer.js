@@ -11,7 +11,7 @@ class AppContainer extends React.Component {
   render() {
     return (
       <Fragment>
-        <Card>
+        <Card fluid>
           <Card.Content>
             <Card.Header>Recent Activity</Card.Header>
           </Card.Content>
