@@ -60,7 +60,6 @@ class App extends Component {
 	}
 
 	getUserFolloweePetitions = () => {
-		console.log("function hit!")
 		let userFolloweeIDs = []
 		let userFolloweePetitions = []
 		this.state.currentUser.followees.forEach(followee => {
@@ -74,7 +73,7 @@ class App extends Component {
 					userFolloweePetitions.push(petition)
 				}
 			})
-			this.setState({userFolloweePetitions: userFolloweePetitions})
+			this.setState({userFolloweePetitions: userFolloweePetitions}, () => console.log(this.state.userFolloweePetitions))
 		})
 	}
 
@@ -90,6 +89,7 @@ class App extends Component {
 				petition_id: petition.id
 			})
 		})
+		this.getUserFolloweePetitions()
 	}
 
 	onPetitionSubmit = () => {
@@ -201,6 +201,7 @@ class App extends Component {
 								currentUser={this.state.currentUser}
 								getUserFolloweePetitions={this.getUserFolloweePetitions}
 								userFolloweePetitions={this.state.userFolloweePetitions}
+								onSignPetitionClick={this.onSignPetitionClick}
 								/>
 						}} />
 						<Route path="/profile" render={(routeProps) => {

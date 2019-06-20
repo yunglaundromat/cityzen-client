@@ -37,7 +37,10 @@ class LoginForm extends React.Component {
 			<Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
 				<Grid.Column style={{ maxWidth: 450 }}>
 					<Header as='h2' color='teal' textAlign='center'>
-						<Image src='img/logo.png' /> Log in to your account
+						 <Image style={{'fontSize':100}} src='img/logo.png' />
+					</Header>
+					<Header as='h2' color='teal' textAlign='center'>
+						 Log in to your account
 					</Header>
 					<Form size='large' onSubmit={this.handleSubmit}>
 						<Segment stacked>

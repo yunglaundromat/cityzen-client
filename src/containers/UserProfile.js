@@ -101,20 +101,6 @@ class UserProfile extends React.Component {
                 </Header>
                 {this.props.selectedUser ? <FolloweesListContainer followees={this.props.selectedUser.followees} /> : null}
               </Grid.Column>
-
-            </Grid.Row>
-            <Grid.Row>
-              <Grid.Column>
-                <Header as='h3' inverted textAlign='center'>
-                  {this.props.selectedUser ? this.props.selectedUser.name : null}'s followers
-                </Header>
-              </Grid.Column>
-              {/*<Grid.Column>
-                <Header as='h3' inverted textAlign='center'>
-                  Edit your petitions
-                </Header>
-                <p />
-              </Grid.Column>*/}
             </Grid.Row>
           </Grid>
       </Container>

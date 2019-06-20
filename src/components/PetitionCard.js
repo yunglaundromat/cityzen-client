@@ -3,6 +3,17 @@ import { Card, Button } from 'semantic-ui-react'
 
 class PetitionCard extends React.Component {
 
+  state={
+    clicked: false
+  }
+
+  onButtonClick = (e) => {
+    e.preventDefault()
+    if (!this.state.clicked) {
+      this.setState({clicked: true})
+    }
+  }
+
   findSignatureLength(signatures, secondArg) {
     if (signatures === []) {
       return 0
@@ -21,9 +32,15 @@ class PetitionCard extends React.Component {
           <Card.Meta>Signatures: {this.findSignatureLength(this.props.petition.signatures)}</Card.Meta>
           <Card.Meta>Signature goal: {this.props.petition.signature_goal}</Card.Meta>
           <div className='ui two buttons'>
-            <Button basic color='green' onClick={() => this.props.onSignPetitionClick(this.props.petition)}>
+            {this.state.clicked ?
+            <Button basic color='green'>
+              Signed!
+            </Button>
+            :
+            <Button basic color='blue' onClick={() => this.props.onSignPetitionClick(this.props.petition)} onClick={this.onButtonClick}>
               Sign Petition
             </Button>
+            }
           </div>
         </Card.Content>
       </Card>

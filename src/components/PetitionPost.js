@@ -1,7 +1,19 @@
 import React from 'react'
-import { Card, Feed, Icon } from 'semantic-ui-react'
+import { Card, Feed, Icon, Button } from 'semantic-ui-react'
 
 class PetitionPost extends React.Component {
+
+  state={
+    clicked: false
+  }
+
+  onButtonClick = (e) => {
+    e.preventDefault()
+    if (!this.state.clicked) {
+      this.setState({clicked: true})
+    }
+  }
+  
   render() {
     return (
       <Feed>
@@ -16,7 +28,18 @@ class PetitionPost extends React.Component {
               <Card.Content description={this.props.petition.description} />
               <Card.Content extra>
                 <Icon name='pencil alternate' />
-                {this.props.petition.signatures.length} signatures
+                {this.props.petition.signatures.length} signatures - <b>sign petition</b>
+                <br></br>
+                <Icon name='pencil alternate' />
+                {this.props.petition.signature_goal} signatures needed
+              </Card.Content>
+              <Card.Content>
+                {this.state.clicked ?
+                <Button primary >Signed!</Button>
+                :
+                <Button primary onClick={() => this.props.onSignPetitionClick(this.props.petition)} onClick={this.onButtonClick}>Sign</Button>
+                }
+                <Button secondary>View User</Button>
               </Card.Content>
             </Card>
           </Feed.Content>

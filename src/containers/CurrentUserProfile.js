@@ -57,7 +57,6 @@ class CurrentUserProfile extends React.Component {
   render() {
     return (
       <Container>
-        {/* Heads up! We apply there some custom styling, you usually will not need it. */}
         <style>{`
           html, body {
             background-color: #252839 !important;
@@ -95,33 +94,19 @@ class CurrentUserProfile extends React.Component {
             <Grid.Row>
               <Grid.Column>
                 <Header as='h3' inverted textAlign='center'>
-                  Start a petition
-                </Header>
-                <p />
-              </Grid.Column>
-              <Grid.Column>
-                <Header as='h3' inverted textAlign='center'>
-                  Your petitions
-                </Header>
-                {this.props.currentUser ? <PetitionListContainer petitions={this.props.currentUser.petitions} onSignPetitionClick={this.props.onSignPetitionClick}/> : null }
-              </Grid.Column>
-            </Grid.Row>
-            <Grid.Row>
-              <Grid.Column>
-                <Header as='h3' inverted textAlign='center'>
-                  Your followers
-                </Header>
-                <p />
-              </Grid.Column>
-              <Grid.Column>
-                <Header as='h3' inverted textAlign='center'>
                   Users you follow
                 </Header>
-                {this.props.currentUser ? <FolloweeListContainer followees={this.props.currentUser.followees} /> : null }
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
-      </Container>
+                  {this.props.currentUser ? <FolloweeListContainer followees={this.props.currentUser.followees} /> : null }
+                </Grid.Column>
+                <Grid.Column>
+                  <Header as='h3' inverted textAlign='center'>
+                    Your petitions
+                  </Header>
+                  {this.props.currentUser ? <PetitionListContainer petitions={this.props.currentUser.petitions} onSignPetitionClick={this.props.onSignPetitionClick}/> : null }
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
+        </Container>
     )
 
   }
